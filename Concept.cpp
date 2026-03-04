@@ -2,6 +2,8 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <random>
+#include <time.h>
 using namespace std;
 #if defined(_WIN32) || defined(_WIN64) 
     #define WINDOWS
@@ -11,13 +13,12 @@ using namespace std;
     #define UNIX
     char getch(void);
 #else
-    #error "Platform is not supported"
+    #error "Platform is not supported go to play minecraft"
 #endif
 
 void clear (void) {
     #ifdef WINDOWS
-        printf("\033[2J");
-        printf("\033[0;0f");
+        system("cls");
     #else
         system("clear");
     #endif
@@ -32,36 +33,40 @@ void clear (void) {
         return ch;
     }
 #endif
-
-
+void generate_snake(int sqare_map[], int &x, int &y);
 bool game();
 int start();
+
+
+
 int main(){
     start();
+    
     return 0;
 }
-void print_searting(string pick, int ){
-
+void generate_snake(int sqare_map[], int &x, int &y){
+    srand(time(0));
+    x = rand() % sqare_map[0], y = rand() % sqare_map[1];
 }
-bool game(){
-    vector<vector<char>>map(20,vector<char>(20,'Z'));
-    vector<char>snake(40,'*');
-    snake[0] = '*';
+bool game(int square_map[], int speed_snake){
+    vector<vector<char>>map(square_map[0],vector<char>(square_map[1],'0'));
+    int x ,y;
+    generate_snake(square_map, x, y);
+    map[x][y] = '*';
     while(true){
-        for (size_t i = 0; i < 20; i++)
+        for (size_t i = 0; i < square_map[0]; i++)
         {
-            for (size_t j = 0; j < 20; j++)
+            for (size_t j = 0; j < square_map[1]; j++)
             {
                 cout << map[i][j] << ' ';
             }
             cout << endl;
         }
-        this_thread::sleep_for(chrono::milliseconds(500));
+        this_thread::sleep_for(chrono::milliseconds(speed_snake));
         clear();
     }
     return 0;
 }
-
 int start(){
     int client[2]{10,10}; // Размер карты
     int speed_snake = 500; // Скорость, по факту тайминг обновления карты в МС
@@ -98,7 +103,7 @@ int start(){
     game:
         clear();
         cout << "========Welcome========\n";
-        game();
+        game(client,speed_snake);
 
         goto menu;
 
@@ -113,10 +118,10 @@ int start(){
             "U pick: "
             };
 
-        printf("-------------Searting------------\n");
-        printf("|  1 - Screen Resolution %d x %d|\n",client[0], client[1]);
+        printf("-------------Searting-------------\n");
+        printf("|  1 - Screen Resolution %d x %d |\n",client[0], client[1]);
         printf("|  2 - Velocity          %d (MS)|\n",speed_snake);
-        printf("|  3 - Exit                     |\n---------------------------------\nU pick: ");
+        printf("|  3 - Exit                      |\n----------------------------------\nU pick: ");
         char select_searting  = getch();
         switch (select_searting)
         {
