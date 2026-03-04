@@ -60,8 +60,10 @@ bool game(int square_map[], int speed_snake){
             {
                 cout << map[i][j] << ' ';
             }
+            swap(map[x][y],map[x][y + 1]);
             cout << endl;
         }
+        
         this_thread::sleep_for(chrono::milliseconds(speed_snake));
         clear();
     }
