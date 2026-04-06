@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-void ecc();
+bool ecc(int a, int b, int mod);
 void visual_points();
 
 struct Point { int *x = {new int [255]}; int *y = {new int [255]};};
@@ -85,20 +85,30 @@ Point generate_points(int a, int b, int mod){
     }
     return pt;   
 }
-
+Point pq(Point xy, int mod, int id_x, int id_y) {
+    int lyam, head, footer;
+    head = 
+    cout << xy.x[id_x - 1] << "," << xy.y[id_x - 1] << endl;
+    cout << xy.x[id_y - 1] << "," << xy.y[id_y - 1];
+    
+    
+    
+    
+    return xy;
+}
+bool ecc(int a, int b, int mod){
+    Point qwe = generate_points(a, b, mod);
+    if (test_singulyar(a, b, mod) == true) return false;
+    cout << "Format - {x, y} | " << "O{∞, ∞} " << endl;
+    for(int i = 0; i < size_P(qwe); i++){
+        cout <<  i + 1  << "{" <<  qwe.x[i] << ", " << qwe.y[i] << "};" << endl;
+    }
+    pq(qwe, mod, 1, 3);
+    return false;
+}
 
 int main(void){
-    Point qwe;
-    int a = 2, b = 1, mod = 13;
-
-    qwe = generate_points(a, b, mod);
-    if (test_singulyar(a, b, mod) == true) return 0;
-    int size = size_P(qwe);
-    cout << "Format - {x, y} ||| " << "O{∞, ∞} ";
-    for(int i = 0; i < size; i++){
-        cout <<  i + 1  << "{" <<  qwe.x[i] << ", " << qwe.y[i] << "}, ";
-    }
     
-    // ecc();
-    return 0;
+    return ecc(2, 1, 5); // a, b, mod;
+    
 }
