@@ -4,7 +4,7 @@ using namespace std;
 bool ecc(int a, int b, int mod);
 void visual_points();
 
-struct Point { int *x = {new int [255]}; int *y = {new int [255]};};
+struct Point { int *x = {new int [255]{0}}; int *y = {new int [255]{0}};};
 
 int size_P(Point point){
     for(int i = 0; ; i++){
@@ -197,7 +197,5 @@ bool ecc(int a, int b, int mod){
 }
 
 int main(void){
-    
     return ecc(2, 1, 5); // a, b, mod;
-
 }
