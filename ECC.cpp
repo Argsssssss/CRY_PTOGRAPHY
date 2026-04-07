@@ -37,7 +37,7 @@ int negative_numb(int numb, int mod){
     return numb;
 }
 
-int inverse_numb_on_map_galua_GF(int numb, int mod){
+int inverse_numb_in_map_galua_GF(int numb, int mod){
     int x[255] = {1,0};
     int i = 2, b = mod, r, q;
     while(true){
@@ -67,7 +67,9 @@ bool test_singulyar(int a, int b, int mod){
     }
     return 0;
 }
-
+void print_P(Point point, int id_p){
+    cout << "{" <<  point.x[id_p] << ", " << point.y[id_p] << "};" << endl;
+}
 Point generate_points(int a, int b, int mod){
     Point pt;
     if (test_singulyar(a, b, mod) == true){ cout << "Singulyar" << endl; return pt;}
@@ -85,30 +87,117 @@ Point generate_points(int a, int b, int mod){
     }
     return pt;   
 }
-Point pq(Point xy, int mod, int id_x, int id_y) {
-    int lyam, head, footer;
-    head = 
-    cout << xy.x[id_x - 1] << "," << xy.y[id_x - 1] << endl;
-    cout << xy.x[id_y - 1] << "," << xy.y[id_y - 1];
+Point pq(Point xy, int mod, int id_p, int id_q) { // Сложение разных точек
+    Point buff;
+    int lyam;
+    // id_p = p
+    // id_q = q
+    // xy.x[id_p - 1] = xP
+    // xy.y[id_p - 1] = yP
+    // xy.x[id_q - 1] = xQ
+    // xy.y[id_q - 1] = yQ ... для удобного копирования при разработке...удобно
+
+    if(negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) == negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod)){lyam = 1;}
+    else{lyam = (negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) * inverse_numb_in_map_galua_GF(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod), mod)) % mod;}
+    cout << "λ = " << lyam << "; ";
+
+    buff.x[0] = negative_numb(degree_mod(lyam, 2, mod) - (xy.x[id_p - 1] + xy.x[id_q - 1]), mod);
+    buff.y[0] = negative_numb(lyam * (xy.x[id_p - 1] - buff.x[0]) - xy.y[id_p - 1], mod);
     
+    return buff;
+}
+Point pp(Point xy,int a, int mod, int id_p){
+    Point buff;
+    int lyam;
+    if(negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) == negative_numb(2 * xy.y[id_p - 1], mod)){lyam = 1;}
+    else{lyam = (negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) * inverse_numb_in_map_galua_GF(negative_numb(2 * xy.y[id_p - 1], mod), mod)) % mod;}
+    cout << "λ = " << lyam << "; ";
+
+    buff.x[0] = negative_numb(degree_mod(lyam,2,mod) - 2 * xy.x[id_p - 1], mod);
+    buff.y[0] = negative_numb(lyam * (xy.x[id_p - 1] - buff.x[0]) - xy.y[id_p - 1], mod);
     
-    
-    
-    return xy;
+    return buff;
+}
+int search_id_in_points(Point xy, Point buff){ // Функция возвращает идентификатор точки из списка, которая совпадает с buff
+    for(int i = 0; i < size_P(xy); i++){
+        if(buff.x[0] == xy.x[i] && buff.y[0] == xy.y[i]){
+            return i + 1;
+        }
+    }
+    return 0;
+}
+Point px(Point xy, int a, int mod, int id_p, int mult){
+    Point buff;
+    if(mult == 0){
+        return buff;
+    }else if(mult == 1){
+        buff.x[0] = xy.x[id_p - 1];
+        buff.y[0] = xy.y[id_p - 1];
+        return buff;
+    }else{
+        buff.x[0] = xy.x[id_p - 1];
+        buff.y[0] = xy.y[id_p - 1];
+
+        for(int i = 0; i < mult - 1; i++){
+            cout << i + 2 << "X: ";
+            if(buff.x[0] == xy.x[id_p - 1] && buff.y[0] == xy.y[id_p - 1]){
+                buff = pp(xy, a, mod, id_p);
+            }else{
+                
+                buff = pq(xy, mod, id_p, search_id_in_points(xy, buff));
+            }
+
+            cout << "{" << buff.x[0] << ", " << buff.y[0] << "}" << endl;
+        }
+    }
+    return buff;
 }
 bool ecc(int a, int b, int mod){
-    Point qwe = generate_points(a, b, mod);
+    Point qwe = generate_points(a, b, mod), buff;
     if (test_singulyar(a, b, mod) == true) return false;
-    cout << "Format - {x, y} | " << "O{∞, ∞} " << endl;
+    cout << "Format - №{x, y} | " << "O{∞, ∞} " << endl;
     for(int i = 0; i < size_P(qwe); i++){
-        cout <<  i + 1  << "{" <<  qwe.x[i] << ", " << qwe.y[i] << "};" << endl;
+        cout << i + 1;
+        print_P(qwe, i);
     }
-    pq(qwe, mod, 1, 3);
+    int select = 0;
+    int p, q;
+    int mult = 0;
+    while(true){    
+        cout << "\nSelect:\n1 - P + P\n2 - P + Q\n3 - Px\n4 - Exit\n";
+        cin >> select;
+        switch(select){
+            case 1:
+                cout << "Number point: ";
+                select = 0;
+                cin >> select;
+                buff = pp(qwe, a, mod, select);
+                print_P(buff,0);
+                break;
+            case 2:
+                cout << "Number points: ";
+                cin >> p >> q;
+                buff = pq(qwe, mod, p, q);
+                print_P(buff,0);
+                break;
+            case 3:
+                cout << "Number point: ";
+                select = 0;
+                cin >> select;
+                cout << "Factor: ";
+                cin >> mult;
+                buff = px(qwe, a, mod, select, mult);
+                break;
+            case 4:
+               return false;
+        }
+        cout << "----------------------------------------\n";
+    }
     return false;
 }
 
 int main(void){
     
     return ecc(2, 1, 5); // a, b, mod;
-    
+
 }
