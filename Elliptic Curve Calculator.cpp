@@ -1,12 +1,8 @@
 #include <iostream>
 using namespace std;
 
-bool ecc(int a, int b, int mod);
-
-
 struct Point { int *x = {new int [255]{0}}; int *y = {new int [255]{0}};};
 struct L_R_Viershtrass { int *l = {new int [255]{0}}; int *r = {new int [255]{0}};};
-void visual_generate_points(int a, int b, int mod);
 
 int size_P(Point point){
     for(int i = 0; ; i++){
@@ -15,18 +11,14 @@ int size_P(Point point){
         }
     }
     return 0;
-}
-
-int degree_mod(int ground, int degree, int mod){
+}int degree_mod(int ground, int degree, int mod){
     int buff = 1;
     for(int i = 0; i < degree;i++){
         buff *= ground;
         buff %= mod;
     }
     return buff;
-}
-
-int negative_numb(int numb, int mod){
+}int negative_numb(int numb, int mod){
     if(numb < 0){
         while (numb < 0)
         {
@@ -37,9 +29,7 @@ int negative_numb(int numb, int mod){
         numb %= mod;
     }
     return numb;
-}
-
-int inverse_numb_in_map_galua_GF(int numb, int mod){
+}int inverse_numb_in_map_galua_GF(int numb, int mod){
     int x[255] = {1,0};
     int i = 2, b = mod, r, q;
     while(true){
@@ -70,7 +60,19 @@ bool test_singulyar(int a, int b, int mod){
     return 0;
 }
 void print_P(Point point, int id_p){
-    cout << "{" <<  point.x[id_p] << ", " << point.y[id_p] << "};" << endl;
+    cout << "{" <<  point.x[id_p] << ", " << point.y[id_p] << "}; ";
+}
+string print_i(int i){
+    string buff = " ";
+    if(i < 10){
+        buff = " " + to_string(i) + " ";
+        return buff;
+    }
+    else if(i >= 10 && i < 100){
+        buff = " " + to_string(i);
+        return buff;
+    }else{return to_string(i);}
+    return to_string(i);
 }
 L_R_Viershtrass L_R_Points(int a, int b, int mod){
     L_R_Viershtrass result;
@@ -81,20 +83,15 @@ L_R_Viershtrass L_R_Points(int a, int b, int mod){
     return result;
 }
 void visual_generate_points(int a, int b, int mod){
-    // L = 0 = R = 1
-    // L = 1 = R = 4
-    // L = 4 = R = 3
-    // L = 4 = R = 4
-    // L = 1 = R = 3
     L_R_Viershtrass result = L_R_Points(a, b, mod);
     char point = '*';
-    cout << "y/x| ";
+    cout << "y/x|";
     for(int i = 0; i < mod; i++){
-        cout << i << " | ";
+        cout << print_i(i) << "|";
     }
-    cout << "L \n";
+    cout << " L\n";
     for(int i = 0; i < mod; i++){
-        cout << i << "  | ";
+        cout << print_i(i) << "| ";
         for(int j = 0; j < mod; j++){
             if(degree_mod(i,2,mod) == (degree_mod(j,3,mod) + a * j + b) % mod){
                 cout << point << " | ";
@@ -104,10 +101,10 @@ void visual_generate_points(int a, int b, int mod){
         cout << result.l[i] << "  \n";
     }
     
-    cout << "R  | ";
+    cout << " R |";
 
     for(int i = 0; i < mod; i++){
-        cout << result.r[i] << " | ";
+        cout << print_i(result.r[i]) << "|";
     }
     cout <<'\n';
 }
@@ -196,12 +193,15 @@ Point px(Point xy, int a, int mod, int id_p, int mult){
 bool ecc(int a, int b, int mod){
     Point qwe = generate_points(a, b, mod), buff;
     if (test_singulyar(a, b, mod) == true) return false;
+    visual_generate_points(a, b, mod);
+    cout << "\n----------------------------------------\n";
     cout << "Format - №{x, y} | " << "O{∞, ∞} " << endl;
     for(int i = 0; i < size_P(qwe); i++){
         cout << i + 1;
         print_P(qwe, i);
     }
-    visual_generate_points(a, b, mod);
+    cout << "\n----------------------------------------\n";
+
     int select = 0;
     int p, q;
     int mult = 0;
@@ -233,13 +233,11 @@ bool ecc(int a, int b, int mod){
             case 4:
                return false;
         }
-        cout << "----------------------------------------\n";
+        cout << "\n----------------------------------------\n";
     }
     return false;
 }
 
 int main(void){
-    
-    
-    return ecc(2, 1, 5); // a, b, mod;
+    return ecc(9, 1, 13); // a, b, mod;
 }
