@@ -2,9 +2,11 @@
 using namespace std;
 
 bool ecc(int a, int b, int mod);
-void visual_points();
+
 
 struct Point { int *x = {new int [255]{0}}; int *y = {new int [255]{0}};};
+struct L_R_Viershtrass { int *l = {new int [255]{0}}; int *r = {new int [255]{0}};};
+void visual_generate_points(int a, int b, int mod);
 
 int size_P(Point point){
     for(int i = 0; ; i++){
@@ -69,6 +71,45 @@ bool test_singulyar(int a, int b, int mod){
 }
 void print_P(Point point, int id_p){
     cout << "{" <<  point.x[id_p] << ", " << point.y[id_p] << "};" << endl;
+}
+L_R_Viershtrass L_R_Points(int a, int b, int mod){
+    L_R_Viershtrass result;
+    for(int i = 0; i < mod; i++){
+        result.l[i] = degree_mod(i,2,mod);
+        result.r[i] = (degree_mod(i,3,mod) + a * i + b) % mod;
+    }
+    return result;
+}
+void visual_generate_points(int a, int b, int mod){
+    // L = 0 = R = 1
+    // L = 1 = R = 4
+    // L = 4 = R = 3
+    // L = 4 = R = 4
+    // L = 1 = R = 3
+    L_R_Viershtrass result = L_R_Points(a, b, mod);
+    char point = '*';
+    cout << "y/x| ";
+    for(int i = 0; i < mod; i++){
+        cout << i << " | ";
+    }
+    cout << "L \n";
+    for(int i = 0; i < mod; i++){
+        cout << i << "  | ";
+        for(int j = 0; j < mod; j++){
+            if(degree_mod(i,2,mod) == (degree_mod(j,3,mod) + a * j + b) % mod){
+                cout << point << " | ";
+            }else{cout << " " << " | ";}
+            
+        }
+        cout << result.l[i] << "  \n";
+    }
+    
+    cout << "R  | ";
+
+    for(int i = 0; i < mod; i++){
+        cout << result.r[i] << " | ";
+    }
+    cout <<'\n';
 }
 Point generate_points(int a, int b, int mod){
     Point pt;
@@ -160,6 +201,7 @@ bool ecc(int a, int b, int mod){
         cout << i + 1;
         print_P(qwe, i);
     }
+    visual_generate_points(a, b, mod);
     int select = 0;
     int p, q;
     int mult = 0;
@@ -197,5 +239,7 @@ bool ecc(int a, int b, int mod){
 }
 
 int main(void){
+    
+    
     return ecc(2, 1, 5); // a, b, mod;
 }
