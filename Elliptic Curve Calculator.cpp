@@ -136,6 +136,7 @@ Point pq(Point xy, int mod, int id_p, int id_q) { // Сложение разны
     // xy.y[id_q - 1] = yQ ... для удобного копирования при разработке...удобно
 
     if(negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) == negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod)){lyam = 1;}
+    else if(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod) == 0){lyam = negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod);}
     else{lyam = (negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) * inverse_numb_in_map_galua_GF(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod), mod)) % mod;}
     cout << "λ = " << lyam << "; ";
 
@@ -148,6 +149,7 @@ Point pp(Point xy,int a, int mod, int id_p){
     Point buff;
     int lyam;
     if(negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) == negative_numb(2 * xy.y[id_p - 1], mod)){lyam = 1;}
+    else if(2 * xy.y[id_p - 1] == 0){negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) % mod;}
     else{lyam = (negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) * inverse_numb_in_map_galua_GF(negative_numb(2 * xy.y[id_p - 1], mod), mod)) % mod;}
     cout << "λ = " << lyam << "; ";
 
@@ -239,5 +241,5 @@ bool ecc(int a, int b, int mod){
 }
 
 int main(void){
-    return ecc(9, 1, 13); // a, b, mod;
+    return ecc(2, 1, 5); // a, b, mod;
 }
