@@ -193,21 +193,21 @@ Point px(Point xy, int a, int mod, int id_p, int mult){
     return buff;
 }
 bool ecc(int a, int b, int mod){
-    Point qwe = generate_points(a, b, mod), buff;
     if (test_singulyar(a, b, mod) == true) return false;
-    visual_generate_points(a, b, mod);
-    cout << "\n----------------------------------------\n";
-    cout << "Format - №{x, y} | " << "O{∞, ∞} " << endl;
-    for(int i = 0; i < size_P(qwe); i++){
-        cout << i + 1;
-        print_P(qwe, i);
-    }
-    cout << "\n----------------------------------------\n";
-
+    Point qwe = generate_points(a, b, mod), buff;
     int select = 0;
     int p, q;
     int mult = 0;
-    while(true){    
+    while(true){
+        visual_generate_points(a, b, mod);
+        cout << "\n----------------------------------------\n";
+        cout << "Format - №{x, y} | " << "O{∞, ∞} " << endl;
+        for(int i = 0; i < size_P(qwe); i++){
+            cout << i + 1;
+            print_P(qwe, i);
+        }
+        cout << "\n----------------------------------------\n";
+
         cout << "\nSelect:\n1 - P + P\n2 - P + Q\n3 - Px\n4 - Exit\n";
         cin >> select;
         switch(select){
@@ -233,7 +233,9 @@ bool ecc(int a, int b, int mod){
                 buff = px(qwe, a, mod, select, mult);
                 break;
             case 4:
-               return false;
+                return false;
+            default:
+                return false;
         }
         cout << "\n----------------------------------------\n";
     }
