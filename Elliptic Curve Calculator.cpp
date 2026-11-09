@@ -29,7 +29,7 @@ int size_P(Point point){
         numb %= mod;
     }
     return numb;
-}int inverse_numb_in_map_galua_GF(int numb, int mod){
+}int inverse_numb(int numb, int mod){
     int x[255] = {1,0};
     int i = 2, b = mod, r, q;
     while(true){
@@ -137,7 +137,7 @@ Point pq(Point xy, int mod, int id_p, int id_q) { // Сложение разны
 
     if(negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) == negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod)){lyam = 1;}
     else if(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod) == 0){lyam = negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod);}
-    else{lyam = (negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) * inverse_numb_in_map_galua_GF(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod), mod)) % mod;}
+    else{lyam = (negative_numb(xy.y[id_p - 1] - xy.y[id_q - 1], mod) * inverse_numb(negative_numb(xy.x[id_p - 1] - xy.x[id_q - 1], mod), mod)) % mod;}
     cout << "λ = " << lyam << "; ";
 
     buff.x[0] = negative_numb(degree_mod(lyam, 2, mod) - (xy.x[id_p - 1] + xy.x[id_q - 1]), mod);
@@ -150,7 +150,7 @@ Point pp(Point xy,int a, int mod, int id_p){
     int lyam;
     if(negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) == negative_numb(2 * xy.y[id_p - 1], mod)){lyam = 1;}
     else if(2 * xy.y[id_p - 1] == 0){negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) % mod;}
-    else{lyam = (negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) * inverse_numb_in_map_galua_GF(negative_numb(2 * xy.y[id_p - 1], mod), mod)) % mod;}
+    else{lyam = (negative_numb(3 * degree_mod(xy.x[id_p - 1], 2, mod) + a, mod) * inverse_numb(2 * xy.y[id_p - 1], mod), mod)) % mod;}
     cout << "λ = " << lyam << "; ";
 
     buff.x[0] = negative_numb(degree_mod(lyam,2,mod) - 2 * xy.x[id_p - 1], mod);
