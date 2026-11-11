@@ -28,7 +28,7 @@ void division(u_int64_t dividend, u_int64_t divider){
     cout << " / ";
     print_p(divider);
     cout << '\n';
-    while(dividend > divider){
+    while(((dividend >> counter_bite(dividend) - 1) << counter_bite(dividend) - 1) >= (divider >> counter_bite(divider) - 1) << counter_bite(divider) - 1){
         size_t buff = 0;
         for (size_t i = 0; i < counter_bite(divider); i++)
         {   
